@@ -10,9 +10,5 @@ public class MaxTurbulenceSize {
      * @param arr
      * @return
      */
-    public int maxTurbulenceSize(int[] arr) {
 
-
-
-    }
 }

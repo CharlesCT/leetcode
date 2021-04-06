@@ -66,8 +66,6 @@ public class LPS {
             return s;
         boolean dp[][] = new boolean[s.length()][s.length()];
         char [] chars =  s.toCharArray();
-        StringBuilder builder = new StringBuilder();
-        builder.reverse()
         int maxLength = 1;
         int endIndex = 0;
         for (int i = 0; i < s.length() ; i++) {

@@ -4,6 +4,8 @@ package com.ct.leetcode;
  * Created by CT on 2021/2/4.
  */
 
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * 寻找两个排序数组的中位数
  */
@@ -95,6 +97,77 @@ public class FindMedianSortedArrays {
         }
        return findMedinSortedByK(start1,end1,start2,end2,k,A,B);
     }
+
+
+    /**
+     * 在两个排序数组中找到中位数
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public double findMiddleFormSortedArrays(int nums1[],int nums2[]){
+
+        if (nums1.length == 0 && nums2.length == 0 )
+            return -1;
+        // 如果是奇数
+         if ((nums1.length + nums2.length ) %2 != 0){
+             return findKFromSortedArrays(nums1,0,nums2,0, (nums1.length + nums2.length)/2 +1);
+         }else {
+             return (findKFromSortedArrays(nums1,0,nums2,0, (nums1.length + nums2.length)/2 +1 ) + findKFromSortedArrays(nums1,0,nums2,0, (nums1.length + nums2.length)/2))/2;
+         }
+    }
+
+    /**
+     * 在实现中位数的之前，我们先查找第K个数
+     * 因为数组A 和数组B有序 我们肯定可以使用二分法
+     * 分别在 A 和B中查找 前k/2
+     * 如果 A[k/2-1]  > B[k/2-1] 第K个数肯定不在B的前 k/2中
+     * 比如K = 3
+     * A[7,8,9]
+     * B[1,2,3]
+     *分别在 A中找k/2个数 就是A[0] B[0]
+     * 由于 A[0] > B[0]
+     * 抛弃 B中的 k/2 B就变成了[2,3]
+     * 由于抛弃了一个数 K 就变成了 k= 2了
+     * 寻找k/2个数 也就是 1
+     * A[0] > B[1] 抛弃B[1] A[7,8,9] B[3]
+     * k = k -1；
+     * 这时候 k == 1
+     * 直接比较A 中和B中第一个数字谁大 就完事了
+     *A[0] > B[2] 则返回A[0]
+     * 算法思路之后哦
+     * 我们要考虑， 如果 k/2 > b.length 这时候应该使用 b.length/2;
+     */
+    public int findKFromSortedArrays(int num1[],int start1,int nums2[],int start2,int k){
+        int end1 = num1.length;
+        int end2 = nums2.length;
+        //说明数组1 已经空了，直接在数组2去找
+        if (start1 >= end1){
+            return nums2[start2+k-1];
+        }
+        if (start2 >= end2){
+            return num1[start1+k-1];
+        }
+        if (k == 1){
+            return Math.min(num1[start1],nums2[start2]);
+        }
+        //处理越界
+        int middle1 = start1+k/2 > end1 ? end1-1:start1+k/2-1;
+        int middle2 = start2+k/2 > end2 ? end2-1:start2+k/2-1;
+        if (num1[middle1] > nums2[middle2]){
+            //抛弃 num2中的前middle2+1个数
+            k = k - middle2 + start2+1;
+            start2 = middle2 +1;
+        }else {
+            //抛弃num1中的middle1+1个数
+            k = k - middle1 + start1 +1;
+            start1 = middle1 +1;
+        }
+        return findKFromSortedArrays(num1,start1,nums2,start2,k);
+    }
+
+
+
 
 
 

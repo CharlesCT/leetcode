@@ -23,7 +23,6 @@ public class SortListNode {
         if (head == null || head.next == null)
             return head;
         //开始拆分,先找到中点
-        ListNode left = head;
         ListNode fast = head.next;
         ListNode slow = head;
         while (fast!=null && fast.next!=null){
@@ -35,7 +34,7 @@ public class SortListNode {
         if (slow != null)
             slow.next = null;
         //分成两部分了
-        ListNode head2 = sortList(left);
+        ListNode head2 = sortList(head);
         //合并两个排序链表的问题了
         return  merge(head1,head2);
     }
