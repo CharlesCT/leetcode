@@ -108,6 +108,32 @@ public class RotatedArray {
     }
 
 
+    /**
+     * 重复的旋转数组中寻找最小值
+     * @param nums
+     * @return
+     */
+
+    public int findMin_new(int[] nums) {
+        if (nums == null)
+            return -1;
+        int left = 0;
+        int right = nums.length-1;
+        while (left < right){
+            int middle = (left + right)/2;
+            if (nums[middle] >  nums[left]){
+                //说明 middle > left
+                right = middle+1;
+            }else if (nums[middle] < nums[left]){
+                left = middle;
+            }else {
+                left ++;
+            }
+        }
+        return -1;
+    }
+
+
 
 
 

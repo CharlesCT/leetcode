@@ -1,5 +1,7 @@
 package com.ct.leetcode;
 
+import com.ct.leetcode.offer.NNumber;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -45,8 +47,13 @@ public class Test {
 
     /*    SolveNQueens queens = new SolveNQueens();
         queens.solveNQueens(4);*/
-        Subsets subsets = new Subsets();
-        subsets.subsets_new(new int[]{1,2,3});
+ /*       Subsets subsets = new Subsets();
+        subsets.subsets_new(new int[]{1,2,3});*/
+       /* NNumber nNumber = new NNumber();
+        System.out.println(nNumber.findNNnumber(2,5));*/
+
+        LargestNumber largestNumber = new LargestNumber();
+        largestNumber.largestNumber(new int[]{3,30,34,5,9});
 
 
     }

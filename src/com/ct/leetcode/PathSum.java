@@ -2,6 +2,7 @@ package com.ct.leetcode;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.RejectedExecutionHandler;
 
 /**
  * Created by CT on 2021/4/6.
@@ -25,6 +26,52 @@ public class PathSum {
      *     TreeNode(int x) { val = x; }
      * }
      */
+    public int pathSum(TreeNode root, int sum) {
+        // key是前缀和, value是大小为key的前缀和出现的次数
+        Map<Integer, Integer> prefixSumCount = new HashMap<>();
+        // 前缀和为0的一条路径
+        prefixSumCount.put(0, 1);
+        // 前缀和的递归回溯思路
+        return findPath(root, sum,prefixSumCount , 0);
+    }
+
+    /**
+     *
+     * @param target 目标和
+     * @param prefixSumCount 路径数组
+     * @param path 当前的路径和
+     * @return
+     */
+    public int findPath(TreeNode node,int target,Map<Integer,Integer> prefixSumCount,int path){
+
+        if (node == null)
+            return 0;
+
+        path += node.val;
+        int res  = prefixSumCount.getOrDefault(path-target,0);
+        //保存当前的路径和
+        prefixSumCount.put(path,prefixSumCount.getOrDefault(path,0)+1);
+        //查找左孩子右孩子
+        //是否存在 path -target 的路径
+        res +=  findPath(node.left,target,prefixSumCount,path);
+        res += findPath(node.right,target,prefixSumCount,path);
+        //访问节点完毕，集合中删除掉当前的路径
+        prefixSumCount.put(path,prefixSumCount.get(path)-1);
+        return res;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     class Solution {
         public int pathSum(TreeNode root, int sum) {
             // key是前缀和, value是大小为key的前缀和出现的次数

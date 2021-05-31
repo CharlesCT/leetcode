@@ -4,6 +4,7 @@ import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Stack;
 
 /**
@@ -16,13 +17,85 @@ public class CoinChange {
     public int coinChange(int[] coins, int amount) {
         if (amount<1)
             return 0;
-
+        //这里还是自己写一个排序吧
+        quickLick(coins,0,coins.length -1);
+        return findPath(amount,coins,0);
+        //快排
         //这里用一个dp数组来保存，搜索过的数量吧
         //比如 我们又 1 2 5 三种类型
         // 需要找出的 数组为8
         //我们这里会出现各种重复搜索
-        return findPath(amount,coins,new int[amount]);
     }
+
+    //快排
+    public void quickLick(int []coins,int start,int end){
+        if (start >= end)
+            return ;
+
+        int left = start;
+        int right = end;
+        //哨兵
+        int temp = coins[left];
+        while (left < right){
+            //从右边找一个比哨兵大的
+            while (left < right){
+                if (coins[right] > temp)
+                    break;
+                right++;
+            }
+            //从左边找一个比哨兵小的
+            while (left < right){
+                if (coins[left]< temp)
+                    break;
+                left --;
+            }
+            //交换位置
+            swap(left,right,coins);
+        }
+        //和哨兵交换位置
+        swap(start,left,coins);
+        //分治
+        quickLick(coins,start,left-1);
+        quickLick(coins,left+1,end);
+    }
+
+    public void swap(int a,int b,int[] nums){
+        if ( a != b){
+            int temp = nums[b];
+            nums[b] = nums[a];
+            nums[a] = temp;
+        }
+    }
+
+
+
+
+    public int findPath(int target,int[]coins,int count){
+        if (target == 0) {
+            //这里找到了
+            return count;
+        }
+        if (target < 0)
+            return -1;
+        for (int i = 0; i < coins.length; i++) {
+            int res = findPath(target - coins[i], coins, count+1);
+            if (res != -1){
+                return res;
+            }
+        }
+        return -1;
+
+    }
+
+
+
+
+
+
+
+
+
+
 
     //草 过不了啊！！！！！！！！！
     //回溯不行！！！！
@@ -41,14 +114,23 @@ public class CoinChange {
         for (int i = 0; i < coins.length; i++) {
             int res = findPath(target - coins[i], coins, set);
             if (res>=0 && res <min){
-
-                //这里不用取最小值，的原因是每次，conin递增的每次寻找的必然是最小值
                 min = res + 1;
             }
         }
         set[target - 1] = min == Integer.MAX_VALUE ? -1 : min;
         return set[target - 1];
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
